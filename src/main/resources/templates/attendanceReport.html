@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Attendance</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <script
+            src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.min.js"></script>
+    <script src="/employeeListController.js"></script>
+    <link rel="stylesheet"
+          href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{app.css}"/>
+</head>
+<header>
+    <nav class="navbar navbar-default bootsnav">
+        <div class="">
+            <!-- Start Header Navigation -->
+            <div class="navbar-header">
+            <!--    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+                    <i class="fa fa-bars"></i>
+                </button>-->
+                <a class="img-responsive" href="#brand">
+                    <img src="../static/images/bjit_logo.png" width="100" th:src="@{images/bjit_logo.png}"/>
+                </a>
+            </div>
+            <!-- End Header Navigation -->
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="navbar-menu">
+
+                <ul class="nav navbar-nav navbar-right">
+                    <!--<li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Portfolio</a></li>-->
+                    <li><a href="#">
+                        <div class="form-actions floatRight">
+                            <p class="glyphicon glyphicon-user"> Abdur</p>
+                        </div>
+                    </a></li>
+                    <li>
+                        <a><div class="form-actions floatRight">
+                            <button type="button" ng-click="clickOnLogOut()"
+                                    class="btn glyphicon glyphicon-log-out btn-sm"> Logout
+                            </button>
+                        </div></a>
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div>
+    </nav>
+</header>
+<body class="generic-container">
+<div ng-app="myApp" ng-controller="attendanceReportController">
+
+    <div class="panel panel-default">
+       <!-- <div class="panel-heading"><span class="lead">Update information</span>
+            <div class="form-actions floatRight">
+                <button type="button" ng-click="clickOnLogOut()" class="btn glyphicon glyphicon-log-out btn-sm"> Logout
+                </button>
+            </div>
+        </div>-->
+        <div class="formcontainer">
+
+            <div class="alert alert-success" role="alert" ng-show="successMessage"><h4>{{postResultMessage}}</h4></div>
+            <div class="alert alert-danger" role="alert" ng-show="errorMessage"><h4>{{postResultMessage}}</h4></div>
+            <div class="formcontainer">
+                <form name="basicInfoForm" ng-submit="submitForm()">
+
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label class="col-md-2 control-lable" for="file">Attendance </label>
+                            <div class="col-md-7">
+                                <input type="radio" name="employeeType" ng-model="attendanceReportDto.employeeType"
+                                       value="1" checked="checked"
+                                       class="radio-button"
+                                       ng-change="employeeTypeOnChange()"/>All
+                                <input type="radio" name="employeeType" ng-model="attendanceReportDto.employeeType"
+                                       value="2"
+                                       class="radio-button"
+                                       ng-change="employeeTypeOnChange()"/>Individual
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div class="row" ng-show="attendanceReportDto.employeeType==2">
+                        <div class="form-group col-md-12">
+                            <label class="col-md-2 control-lable" for="file">Employee Id</label>
+                            <div class="col-md-7">
+                                <input type="text" ng-model="attendanceReportDto.employeeId" name="employeeId"
+                                       class="employeeId form-control input-sm"
+                                />
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- filter by date will be implemented later....-->
+
+                    <!--
+                                        <div class="row">
+                                            <div class="form-group col-md-12">
+                                                <label class="col-md-2 control-lable" for="file">Select Date </label>
+                                                <div class="col-md-7">
+                                                    <input type="radio" name="dateType" ng-model="attendanceReportDto.dateType" value="1" checked="checked"
+                                                           class="radio-button" />Current Date
+                                                    <input type="radio" name="employeeType" ng-model="attendanceReportDto.dateType" value="2"
+                                                           class="radio-button" />Date Range
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row" ng-show="attendanceReportDto.dateType==2">
+                                            <div class="form-group col-md-12">
+                                                <label class="col-md-2 control-lable" for="file">From Date</label>
+                                                <div class="col-md-7">
+                                                    <input type="date" value="fromDate" class="form-control" id="fromDate"
+                                                           ng-model="attendanceReportDto.fromDate "
+                                                           th:value="${#calendars.format(fromDate,'yyyy-MM-dd')}" th:name="fromDate"/>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row" ng-show="attendanceReportDto.dateType==2">
+                                            <div class="form-group col-md-12">
+                                                <label class="col-md-2 control-lable" for="file">To Date</label>
+                                                <div class="col-md-7">
+                                                    <input type="date" value="toDate" class="form-control" id="toDate"
+                                                           ng-model="attendanceReportDto.toDate "
+                                                           th:value="${#calendars.format(toDate,'yyyy-MM-dd')}" th:name="toDate"/>
+                                                </div>
+                                            </div>
+                                        </div>
+                    -->
+                    <div class="row">
+                        <div class="form-actions floatRight">
+                            <input type="submit" value="Show"
+                                   class="btn btn-primary btn-sm" ng-disabled="myForm.$invalid">
+                            <button type="button" ng-click="reset()" class="btn btn-warning btn-sm"
+                                    ng-disabled="myForm.$pristine">Reset
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="panel panel-default" ng-show="showList">
+                <!-- Default panel contents -->
+                <div class="panel-heading"><span class="lead">Attendance Details </span>
+                    <!-- <button type="button"
+                             ng-click="getAttendanceReport()"
+                             class="btn show-hide-column-image">show</button>-->
+                    <!--ng-click="getAttendanceDetailsById()"-->
+                </div>
+                <div class="tablecontainer">
+                    <table class="table table-hover">
+                        <thead>
+                        <tr>
+                            <th>Employee Id</th>
+                            <th>Date</th>
+                            <th>In time</th>
+                            <th>Out Time</th>
+                            <th>Go Out Time</th>
+                            <th>Return Time</th>
+                            <th>Extra Work</th>
+                            <th>Under Work</th>
+                            <th>Total Work</th>
+                            <th>Delay</th>
+                            <!-- <th width="20%"></th>-->
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="u in attendaceList">
+                            <td><span ng-bind="u.employeeId"></span></td>
+                            <td><span ng-bind="u.date |date:'yyyy-MM-dd'"></span></td>
+                            <td><span ng-bind="u.inTime |date:'HH:mm'"></span></td>
+                            <td><span ng-bind="u.outTime |date:'HH:mm'"></span></td>
+                            <td><span ng-bind="u.goOutTime |date:'HH:mm'"></span></td>
+                            <td><span ng-bind="u.returnTime |date:'HH:mm'"></span></td>
+                            <td><span ng-bind="u.extraWork"></span></td>
+                            <td><span ng-bind="u.underWork"></span></td>
+                            <td><span ng-bind="u.totalWorkingTime"></span></td>
+                            <td><span ng-bind="u.late"></span></td>
+                            <!--                    <td>
+                                                    <button type="button" ng-click="edit(u.employeeId)"
+                                                            class="btn btn-success custom-width">Edit
+                                                    </button>
+                                                    <button type="button" ng-click="remove(u.employeeId)"
+                                                            class="btn btn-danger custom-width">Remove
+                                                    </button>
+                                                </td>-->
+                        </tr>
+                        </tbody>
+                    </table>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
+<script src="/app.js"></script>
+<script src="/attendanceReportController.js"></script>
+<script src="/attendanceService.js"></script>
+
+<footer class="panel-footer">
+    <div>
+        <div class="modal-footer">
+            <a href="">terms and conditions.</a>
+            <a href="">privacy Policy</a>
+            <p>version 0.0.0.1 @copyright <a href="http://bjitgroup.com/bjit-inc/">BJIT Inc (Japan)</a></p>
+        </div>
+    </div>
+</footer>
+</body>
+
+</html>

@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<head>
+    <title>Attendance</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <script
+            src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.0/angular.min.js"></script>
+    <script src="/basicInformationController.js"></script>
+    <link rel="stylesheet"
+          href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{app.css}"/>
+</head>
+<header>
+    <nav class="navbar navbar-default bootsnav">
+        <div class="">
+            <!-- Start Header Navigation -->
+            <div class="navbar-header">
+                <!--    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+                        <i class="fa fa-bars"></i>
+                    </button>-->
+                <a class="img-responsive" href="#brand">
+                    <img src="../static/images/bjit_logo.png" width="100" th:src="@{images/bjit_logo.png}"/>
+                </a>
+            </div>
+            <!-- End Header Navigation -->
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="navbar-menu">
+
+                <ul class="nav navbar-nav navbar-right">
+                    <!--<li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Portfolio</a></li>-->
+                    <li><a href="#">
+                        <div class="form-actions floatRight">
+                            <p class="glyphicon glyphicon-user"> Abdur</p>
+                        </div>
+                    </a></li>
+                    <li>
+                        <a><div class="form-actions floatRight">
+                            <button type="button" ng-click="clickOnLogOut()"
+                                    class="btn glyphicon glyphicon-log-out btn-sm"> Logout
+                            </button>
+                        </div></a>
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div>
+    </nav>
+</header>
+<body class="generic-container">
+<div class="formcontainer" ng-app="app" ng-controller="basicInfoController">
+    <div class="panel panel-default">
+        <div class="panel-heading"><span class="lead">Employee Registration</span>
+<!--            <div class="form-actions floatRight">
+                <button type="button" ng-click="clickOnLogOut()" class="btn glyphicon glyphicon-log-out btn-sm"> Logout
+                </button>
+            </div>-->
+        </div>
+        <div class="container">
+            <div class="alert alert-success" role="alert" ng-show="successMessage"><h4>{{postResultMessage}}</h4></div>
+            <div class="alert alert-danger" role="alert" ng-show="errorMessage"><h4>{{postResultMessage}}</h4></div>
+            <div class="generic-container">
+                <form name="basicInfoForm" ng-submit="submitForm()">
+
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label class="col-md-2 control-lable" for="file">Employee Id</label>
+                            <div class="col-md-7">
+                                <input type="text" ng-model="employeeId" name="employeeId" id="employeeId"
+                                       class="employeeId form-control input-sm" placeholder="Enter employee id"
+                                       required/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label class="col-md-2 control-lable" for="file">First Name</label>
+                            <div class="col-md-7">
+                                <input type="text" ng-model="firstName"
+                                       name="firstName" class="form-control input-sm"
+                                       placeholder="Enter First Name."/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label class="col-md-2 control-lable" for="file">Last Name</label>
+                            <div class="col-md-7">
+                                <input type="text" ng-model="lastName"
+                                       name="lastName" class="form-control input-sm"
+                                       placeholder="Enter Last Name."/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--                    <div class="row">
+                                            <div class="form-group col-md-12">
+                                                <label class="col-md-2 control-lable" for="file">Sex</label>
+                                                <div class="col-md-7">
+                                                    <input type="text" ng-model="sexId"
+                                                           name="sex" class="form-control input-sm"
+                                                           placeholder="Enter Sex."/>
+                                                </div>
+                                            </div>
+                                        </div>-->
+
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label class="col-md-2 control-lable" for="file">Sex</label>
+                            <div class="col-md-7">
+                                <select class="form-control" id="sexId" name="sexId" ng-model="sexId">
+                                    <option value="">Select Sex</option>
+                                    <option th:each="gender : ${genderList}"
+                                            th:value="${gender.id}"
+                                            th:text="${gender.id}+' : '+${gender.name}"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label class="col-md-2 control-lable" for="file">Phone No</label>
+                            <div class="col-md-7">
+                                <input type="text" ng-model="phoneNo"
+                                       name="phoneNo" class="form-control input-sm"
+                                       placeholder="Enter Phone  No."/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label class="col-md-2 control-lable" for="file">Birth Day</label>
+                            <div class="col-md-7">
+                                <input type="date" value="birthDate" class="form-control" id="birthDate"
+                                       ng-model="birthDate "
+                                       th:value="${#calendars.format(birthDate,'yyyy-MM-dd')}" th:name="birthDate"/>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label class="col-md-2 control-lable" for="file">Company Name</label>
+                            <div class="col-md-7">
+                                <select class="form-control" id="companyId" name="companyId" ng-model="companyId">
+                                    <option value="">Select Company</option>
+                                    <option th:each="com : ${companyList}"
+                                            th:value="${com.id}"
+                                            th:text="${com.id}+' : '+${com.name}"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label class="col-md-2 control-lable" for="file">Department</label>
+                            <div class="col-md-7">
+                                <select class="form-control" id="department" name="department" ng-model="department">
+                                    <option value="">Select Department</option>
+                                    <option th:each="dep : ${departmentList}"
+                                            th:value="${dep.id}"
+                                            th:text="${dep.id}+' : '+${dep.name}"></option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-md-12">
+                            <label class="col-md-2 control-lable" for="file">Joining Date</label>
+                            <div class="col-md-7">
+                                <input type="date" value="joiningDate" class="form-control" id="joiningDate"
+                                       ng-model="joiningDate"
+                                       th:value="${#calendars.format(joiningDate,'yyyy-MM-dd')}" th:name="joiningDate"/>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-actions floatRight">
+                            <input type="submit" value="Add" name="Add"
+                                   class="btn btn-primary btn-sm" ng-disabled="myForm.$invalid">
+                            <button type="button" ng-click="reset()" class="btn btn-warning btn-sm" name="reset"
+                                    ng-disabled="myForm.$pristine">Reset Form
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading"><span class="lead">List of Employees </span>
+                <button type="button" ng-click="getAllEmployeesList()" name="show"
+                        class="btn show-hide-columns-button" ng-show="!hideButton">show
+                </button>
+                <button type="button" ng-click="clickOnHide()" name="hide"
+                        class="btn show-hide-columns-button" ng-show="hideButton">Hide
+                </button>
+            </div>
+            <div class="tablecontainer" ng-show="showList">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Employee Id</th>
+                        <th>First Name</th>
+                        <th>Last Name</th>
+                        <th>Sex</th>
+                        <th>Phone No</th>
+                        <th>Birth Date</th>
+                        <th>Company Name</th>
+                        <th>Department</th>
+                        <th>Joining Date</th>
+                        <!--<th width="20%"></th>-->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="u in employeeList">
+                        <td><span ng-bind="u.employeeId"></span></td>
+                        <td><span ng-bind="u.firstName"></span></td>
+                        <td><span ng-bind="u.lastName"></span></td>
+                        <td><span ng-bind="u.sexName"></span></td>
+                        <td><span ng-bind="u.phoneNo"></span></td>
+                        <td><span ng-bind="u.birthDate |date:'yyyy-MM-dd'"></span></td>
+                        <td><span ng-bind="u.companyName"></span></td>
+                        <td><span ng-bind="u.departmentName"></span></td>
+                        <td><span ng-bind="u.joiningDate |date:'yyyy-MM-dd'"></span></td>
+                        <!--<td>
+                            <button type="button" ng-click="edit(u.employeeId)"
+                                    class="btn btn-success custom-width">Edit
+                            </button>
+                            <button type="button" ng-click="remove(u.employeeId)"
+                                    class="btn btn-danger custom-width">Remove
+                            </button>
+                        </td>-->
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+<footer class="panel-footer">
+    <div>
+        <div class="modal-footer">
+            <a href="">terms and conditions.</a>
+            <a href="">privacy Policy</a>
+            <p>version 0.0.0.1 @copyright <a href="http://bjitgroup.com/bjit-inc/">BJIT Inc (Japan)</a></p>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

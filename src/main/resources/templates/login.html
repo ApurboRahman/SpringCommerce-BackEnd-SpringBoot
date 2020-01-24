@@ -1,0 +1,66 @@
+<html xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<head>
+    <title>Attendance</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{app.css}"/>
+    <link rel="stylesheet" type="text/css" th:href="@{signup.css}"/>
+</head>
+<body ng-app="myApp" class="ng-cloak">
+<div class="generic-container" ng-controller="loginController">
+    <div class="panel panel-default">
+        <div class="panel-heading"><span class="lead">Employee Login </span></div>
+        <div class="formcontainer">
+            <div class="alert alert-success" role="alert" ng-show="successMessage">{{postResultMessage}}</div>
+            <div class="alert alert-danger" role="alert" ng-show="errorMessage">{{postResultMessage}}</div>
+            <form ng-submit="submit()" name="myForm" class="form-horizontal">
+                <input type="hidden" ng-model="basicInfo.id"/>
+                <div class="form-group-sm">
+                    <div class="form-group col-md-offset-6">
+                        <div class="col-md-6 custom-signup">
+                            <div class="custom-signup">
+                                <label for="companyId"><b>Company Id</b></label>
+                                <input type="text" placeholder="Enter Company Id"
+                                       name="companyId"
+                                       ng-model="loginDto.companyId"
+                                       ng-blur="blurOnChange()"
+                                       required>
+                            </div>
+
+                            <div class="custom-signup">
+                                <label for="employeeId"><b>Employee Id</b></label>
+                                <input type="text" placeholder="Enter employee Id"
+                                       name="employeeId"
+                                       ng-model="loginDto.employeeId"
+                                       ng-blur="blurOnChange()"
+                                       required>
+                            </div>
+                            <div class="custom-signup">
+                                <label for="psw"><b>Password</b></label>
+                                <input type="password" placeholder="Enter Password"
+                                       name="passwords"
+                                       ng-model="loginDto.passwords"
+                                       ng-blur="blurOnChange()"
+                                       required>
+                            </div>
+
+                            <div class="clearfix custom-signup">
+                                <button type="button" class="cancelbtn" ng-click="reset()">Cancel</button>
+                                <button type="submit" class="signupbtn">Login </button>
+                                <span class="psw">Forgot <a href="http://localhost:8080/changePasswords">password?</a></span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
+<script src="/app.js"></script>
+<script src="/loginController.js"></script>
+<script src="/loginService.js"></script>
+
+</body>
+</html>

@@ -1,0 +1,196 @@
+<html xmlns:th="http://www.springframework.org/schema/data/jaxb">
+<head>
+    <title>Attendance</title>
+
+    <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
+    <link rel="stylesheet"
+          href="http://netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" type="text/css" th:href="@{app.css}"/>
+</head>
+<header>
+    <nav class="navbar navbar-default bootsnav">
+        <div class="">
+            <!-- Start Header Navigation -->
+            <div class="navbar-header">
+                <!--    <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#navbar-menu">
+                        <i class="fa fa-bars"></i>
+                    </button>-->
+                <a class="img-responsive" href="#brand">
+                    <img src="../static/images/bjit_logo.png" width="100" th:src="@{images/bjit_logo.png}"/>
+                </a>
+            </div>
+            <!-- End Header Navigation -->
+            <!-- Collect the nav links, forms, and other content for toggling -->
+            <div class="collapse navbar-collapse" id="navbar-menu">
+
+                <ul class="nav navbar-nav navbar-right">
+                    <!--<li><a href="#">Home</a></li>
+                    <li><a href="#">About Us</a></li>
+                    <li><a href="#">Services</a></li>
+                    <li><a href="#">Portfolio</a></li>-->
+                    <li><a href="#">
+                        <div class="form-actions floatRight">
+                            <p class="glyphicon glyphicon-user"> Abdur</p>
+                        </div>
+                    </a></li>
+                    <li>
+                        <a><div class="form-actions floatRight">
+                            <button type="button" ng-click="clickOnLogOut()"
+                                    class="btn glyphicon glyphicon-log-out btn-sm"> Logout
+                            </button>
+                        </div></a>
+                    </li>
+                </ul>
+            </div><!-- /.navbar-collapse -->
+        </div>
+    </nav>
+</header>
+<body class="generic-container">
+<div class="formcontainer" ng-app="myApp" ng-controller="attendanceController">
+    <div class="panel panel-default" >
+        <div class="panel-heading"><span class="lead">Daily Attendance </span>
+            <div class="form-actions floatRight">
+                <button type="button" ng-click="clickOnLogOut()" class="btn glyphicon glyphicon-log-out btn-sm"> Logout
+                </button>
+            </div>
+        </div>
+        <div class="container">
+          <!--  <div class="alert alert-success" role="alert" ng-show="successMessage">{{postResultMessage}}</div>-->
+            <div class="alert alert-danger" role="alert" ng-show="errorMessage">{{postResultMessage}}</div>
+            <form ng-submit="submitForm()" name="myForm" class="form-horizontal">
+                <input type="hidden" ng-model="attendanceDto.employeeId"/>
+
+                <div class="row" ng-show="showClock">
+                    <div class="form-group col-md-12">
+                        <label class="col-md-2 control-lable" for="file"></label>
+                        <div class="col-md-7">
+                            <div class="custom-width">
+                                <iframe src="http://free.timeanddate.com/clock/i6my0kd5/n248/fn6/fs16/fc9ff/tc000/ftb/bas2/bat1/bacfff/pa8/tt0/tw1/tm1/th1/ta1/tb4"
+                                        frameborder="0" width="161" height="57"></iframe>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" ng-show="!showClock">
+                    <div class="form-group col-md-12">
+                        <label class="col-md-2 control-lable" for="file"></label>
+                        <div class="col-md-7">
+                            <div class="alert alert-warning" role="alert">
+                                <h4>{{postResultMessage}}</h4>
+                                <h4> {{ currentDate | date : "EEE, MMM d, y h:mm" }}</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row col-md-9">
+                    <div class="form-group col-md-12">
+                        <label class="col-md-2 control-lable" for="file">Employee Id</label>
+                        <div class="col-md-4">
+                            <input type="text" ng-model="attendanceDto.employeeId" name="employeeId"
+                                   class="employeeId form-control input-sm"
+                                   placeholder="Enter your name"
+                                   ng-disabled="page.isSubmitted"
+                                   ng-blur="changeOnEmployeeId()"
+                                   required/>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="form-group col-md-12">
+
+                        <div class="col-md-7">
+
+                            <button type="submit"
+                                    class="btn btn-success formcontainer" ng-disabled="page.isSubmitted">In time
+                            </button>
+                            <button type="button" ng-click="getGoOutTime()"
+                                    class="btn btn-warning formcontainer " ng-disabled="page.isSubmitted">Go Out time
+                            </button>
+                            <button type="button" ng-click="getReturnTime()"
+                                    class="btn btn-info formcontainer " ng-disabled="page.isSubmitted">Return
+                            </button>
+                            <button type="button" ng-click="getOutTime()"
+                                    class="btn btn-danger formcontainer" ng-disabled="page.isSubmitted">Out time
+                            </button>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="container">
+                        <button type="button" ng-click="reset()"
+                                class="btn btn-danger"> Reset</button>
+                    </div>
+                </div>
+            </form>
+
+        </div>
+        <div class="panel panel-default">
+            <!-- Default panel contents -->
+            <div class="panel-heading"><span class="lead">Attendance Details </span>
+                <button type="button" ng-click="getAttendanceDetailsById()"
+                        class="btn show-hide-column-image">show</button>
+            </div>
+            <div class="tablecontainer" ng-show="showList">
+                <table class="table table-hover">
+                    <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>In time</th>
+                        <th>Out Time</th>
+                        <th>Go Out Time</th>
+                        <th>Return Time</th>
+                        <th>Extra Work</th>
+                        <th>Under Work</th>
+                        <th>Total Work</th>
+                        <th>Delay</th>
+                        <!-- <th width="20%"></th>-->
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="u in attendaceList">
+                        <td><span ng-bind="u.date |date:'yyyy-MM-dd'"></span></td>
+                        <td><span ng-bind="u.inTime |date:'HH:mm'"></span></td>
+                        <td><span ng-bind="u.outTime |date:'HH:mm'"></span></td>
+                        <td><span ng-bind="u.goOutTime |date:'HH:mm'"></span></td>
+                        <td><span ng-bind="u.returnTime |date:'HH:mm'"></span></td>
+                        <td><span ng-bind="u.extraWork"></span></td>
+                        <td><span ng-bind="u.underWork"></span></td>
+                        <td><span ng-bind="u.totalWorkingTime"></span></td>
+                        <td><span ng-bind="u.late"></span></td>
+                        <!--                    <td>
+                                                <button type="button" ng-click="edit(u.employeeId)"
+                                                        class="btn btn-success custom-width">Edit
+                                                </button>
+                                                <button type="button" ng-click="remove(u.employeeId)"
+                                                        class="btn btn-danger custom-width">Remove
+                                                </button>
+                                            </td>-->
+                    </tr>
+                    </tbody>
+                </table>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<footer class="panel-footer">
+    <div>
+        <div class="modal-footer">
+            <a href="">terms and conditions.</a>
+            <a href="">privacy Policy</a>
+            <p>version 0.0.0.1 @copyright <a href="http://bjitgroup.com/bjit-inc/">BJIT Inc (Japan)</a></p>
+        </div>
+    </div>
+</footer>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.js"></script>
+<script src="/app.js"></script>
+<script src="/attendanceController.js"></script>
+<script src="/attendanceService.js"></script>
+
+</body>
+</html>
