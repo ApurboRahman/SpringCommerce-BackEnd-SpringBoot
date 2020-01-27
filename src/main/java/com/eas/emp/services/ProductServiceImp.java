@@ -1,9 +1,12 @@
 package com.eas.emp.services;
 
 import com.eas.emp.dto.AddToCartDTO;
+import com.eas.emp.dto.AddToFavoriteDTO;
 import com.eas.emp.model.AddToCartModel;
+import com.eas.emp.model.AddToFavoriteModel;
 import com.eas.emp.model.ProductModel;
 import com.eas.emp.repository.AddToCartRepository;
+import com.eas.emp.repository.AddToFavoriteRepository;
 import com.eas.emp.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,6 +19,8 @@ public class ProductServiceImp implements ProductService {
     private ProductRepository productRepository;
     @Autowired
     AddToCartRepository addToCartRepository;
+    @Autowired
+    AddToFavoriteRepository addToFavoriteRepository;
 
     @Override
     public List<ProductModel> getAllProduct() {
@@ -63,5 +68,32 @@ public class ProductServiceImp implements ProductService {
     @Override
     public void deleteFromCart(int id) {
         addToCartRepository.deleteById(id);
+    }
+
+    @Override
+    public void addToFavorite(AddToFavoriteDTO addToFavoriteDTO) {
+        AddToFavoriteModel cartModel = addToFavoriteRepository.findByProduct(addToFavoriteDTO.getProduct_id());
+        if (cartModel != null) {
+            cartModel.setQuantity(cartModel.getQuantity() + addToFavoriteDTO.getQuantity());
+        } else {
+            cartModel = new AddToFavoriteModel();
+            cartModel.setAmount(addToFavoriteDTO.getAmount());
+            cartModel.setUserTrackId(addToFavoriteDTO.getUserTrackId());
+            cartModel.setProduct(productRepository.getOne(addToFavoriteDTO.getProduct_id()));
+            cartModel.setQuantity(addToFavoriteDTO.getQuantity());
+        }
+        addToFavoriteRepository.save(cartModel);
+
+    }
+
+    @Override
+    public List<AddToFavoriteModel> getAllFromFavorite() {
+        return addToFavoriteRepository.findAll();
+    }
+
+    @Override
+    public void deleteFromFavorite(int id) {
+        addToFavoriteRepository.deleteById(id);
+
     }
 }

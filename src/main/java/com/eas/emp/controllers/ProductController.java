@@ -1,7 +1,9 @@
 package com.eas.emp.controllers;
 
 import com.eas.emp.dto.AddToCartDTO;
+import com.eas.emp.dto.AddToFavoriteDTO;
 import com.eas.emp.model.AddToCartModel;
+import com.eas.emp.model.AddToFavoriteModel;
 import com.eas.emp.model.ProductModel;
 import com.eas.emp.services.ProductService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,4 +47,16 @@ public class ProductController {
         productService.deleteFromCart(id);
     }
 
+    @PostMapping("/addToFavorite")
+    public void addToFavorite(@RequestBody AddToFavoriteDTO addToFavoriteDTO) {
+        productService.addToFavorite(addToFavoriteDTO);
+    }
+    @GetMapping("/favorite")
+    public List<AddToFavoriteModel> getAllFromFavorite() {
+        return productService.getAllFromFavorite();
+    }
+    @DeleteMapping("/delete/favorite/{id}")
+    public void deleteFromFavorite(@PathVariable int id){
+        productService.deleteFromFavorite(id);
+    }
 }
