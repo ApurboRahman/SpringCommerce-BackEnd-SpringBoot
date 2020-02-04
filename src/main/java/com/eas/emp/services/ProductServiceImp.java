@@ -95,8 +95,10 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
+    @Transactional
     public void deleteFromFavorite(int id) {
-        addToFavoriteRepository.deleteById(id);
+        ProductModel productModel = productRepository.findByProduct_No(id);
+        addToFavoriteRepository.deleteAddToCartModelByProduct(productModel);
 
     }
 }
