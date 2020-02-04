@@ -14,4 +14,7 @@ public interface ProductRepository extends JpaRepository<ProductModel,Integer> {
     @Query("SELECT r FROM ProductModel r where r.product_gender = :name")
     List<ProductModel> findByProduct_gender(@Param("name") String name);
 
+    @Query("SELECT r FROM ProductModel r where r.product_no = :product_No")
+    ProductModel findByProduct_No(@Param("product_No") int product_No);
+
 }

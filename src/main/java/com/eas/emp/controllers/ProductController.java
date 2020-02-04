@@ -42,6 +42,7 @@ public class ProductController {
     public List<AddToCartModel> getAllFromCart() {
         return productService.getAllFromCart();
     }
+
     @DeleteMapping("/delete/{id}")
     public void deleteFromCart(@PathVariable int id){
         productService.deleteFromCart(id);

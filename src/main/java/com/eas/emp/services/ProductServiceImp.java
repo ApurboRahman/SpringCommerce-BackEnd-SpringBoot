@@ -10,6 +10,7 @@ import com.eas.emp.repository.AddToFavoriteRepository;
 import com.eas.emp.repository.ProductRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -66,8 +67,10 @@ public class ProductServiceImp implements ProductService {
     }
 
     @Override
+    @Transactional
     public void deleteFromCart(int id) {
-        addToCartRepository.deleteById(id);
+        ProductModel productModel = productRepository.findByProduct_No(id);
+        addToCartRepository.deleteAddToCartModelByProduct(productModel);
     }
 
     @Override
